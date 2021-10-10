@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import HomePage from "./components/HomePage/HomePage";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import reducer from "./store/reducer";
+import { Route } from "react-router";
+import CategoryPage from "./components/CategoryPage/CategoryPage";
+
+const store = createStore(reducer);
+
+store.subscribe(() => {
+  localStorage["redux-store"] = JSON.stringify(store.getState());
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div class="container">
+      <Provider store={store}>
+        <Route path="/" exact>
+          <HomePage />
+        </Route>
+        <Route path="/category/:categoryId">
+          <CategoryPage />
+        </Route>
+      </Provider>
     </div>
   );
 }
